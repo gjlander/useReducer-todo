@@ -1,25 +1,20 @@
 import { useState } from 'react';
-export default function TasklistTitle({
-    tasklistName,
-    listid,
-    dispatchTasklists,
-}) {
+import { useTasklistsDispatch } from '../contexts';
+
+export default function TasklistTitle({ tasklistName, listid }) {
     const [editingTitle, setEditingTitle] = useState(false);
     const [titleEdit, setTitleEdit] = useState(tasklistName);
+    const dispatchTasklists = useTasklistsDispatch();
+
     const toggleEditingTitle = () => setEditingTitle((prev) => !prev);
-    const editTitle = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
         dispatchTasklists({
             type: 'list_name_updated',
             id: listid,
             name: titleEdit,
         });
-        // setTasklists((prev) =>
-        //     prev.map((tasklist) =>
-        //         tasklist.listid === listid
-        //             ? { ...tasklist, tasklistName: titleEdit }
-        //             : tasklist
-        //     )
-        // );
+        toggleEditingTitle();
     };
     return (
         <div className='d-flex justify-content-center my-3'>
@@ -28,14 +23,7 @@ export default function TasklistTitle({
                     {tasklistName}
                 </h2>
             ) : (
-                <form
-                    className='input-group w-25'
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                        editTitle();
-                        toggleEditingTitle();
-                    }}
-                >
+                <form className='input-group w-25' onSubmit={handleSubmit}>
                     <input
                         type='text'
                         className='form-control'

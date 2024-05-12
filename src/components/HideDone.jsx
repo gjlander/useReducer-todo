@@ -1,17 +1,13 @@
-export default function HideDone({ hideDone, listid, dispatchTasklists }) {
+import { useTasklistsDispatch } from '../contexts';
+export default function HideDone({ hideDone, listid }) {
+    const dispatchTasklists = useTasklistsDispatch();
+
     const toggleHideDone = () => {
         dispatchTasklists({
             type: 'toggle_hide',
             id: listid,
             hideDone,
         });
-        // setTasklists((prev) =>
-        //     prev.map((tasklist) =>
-        //         tasklist.listid === listid
-        //             ? { ...tasklist, hideDone: !hideDone }
-        //             : tasklist
-        //     )
-        // );
     };
     return (
         <div

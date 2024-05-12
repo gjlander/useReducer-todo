@@ -1,4 +1,10 @@
-function AddNewTodo({ title, setTitle, dispatchTasklists, listid }) {
+import { useState } from 'react';
+import { useTasklistsDispatch } from '../contexts';
+
+function AddNewTodo({ listid }) {
+    const [title, setTitle] = useState('');
+    const dispatchTasklists = useTasklistsDispatch();
+
     const handleTitleText = (e) => setTitle(e.target.value);
 
     const handleNewTodoSubmit = (e) => {

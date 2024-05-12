@@ -1,7 +1,10 @@
 import { useState } from 'react';
+import { useTasklistsDispatch } from '../contexts';
 import EditForm from './EditForm';
-function TodoItem({ id, done, title, hideDone, dispatchTasklists, listid }) {
+function TodoItem({ id, done, title, hideDone, listid }) {
     const [editing, setEditing] = useState(false);
+
+    const dispatchTasklists = useTasklistsDispatch();
 
     const toggleEditing = () => {
         setEditing((prev) => !prev);

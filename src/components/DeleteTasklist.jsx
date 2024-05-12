@@ -1,4 +1,6 @@
-export default function DeleteTasklist({ dispatchTasklists, listid }) {
+import { useTasklistsDispatch } from '../contexts';
+export default function DeleteTasklist({ listid }) {
+    const dispatchTasklists = useTasklistsDispatch();
     const deleteList = () => {
         dispatchTasklists({ type: 'list_deleted', id: listid });
     };

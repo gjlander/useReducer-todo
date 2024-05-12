@@ -1,9 +1,8 @@
-export default function AddNewTasklist({
-    tasklistName,
-    setTasklistName,
-    // tasklists,
-    dispatchTasklists,
-}) {
+import { useTasklistsDispatch } from '../contexts';
+
+export default function AddNewTasklist({ tasklistName, setTasklistName }) {
+    const dispatchTasklists = useTasklistsDispatch();
+
     const handleNewTasklistText = (e) => setTasklistName(e.target.value);
     const handleNewTasklistSubmit = (e) => {
         e.preventDefault();
@@ -12,12 +11,7 @@ export default function AddNewTasklist({
         setTasklistName('');
     };
     return (
-        <form
-            className='input-group mb-3'
-            onSubmit={(e) => {
-                handleNewTasklistSubmit(e);
-            }}
-        >
+        <form className='input-group mb-3' onSubmit={handleNewTasklistSubmit}>
             <input
                 type='text'
                 className='form-control'

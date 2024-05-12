@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import TasklistTitle from './TasklistTitle';
@@ -7,8 +6,10 @@ import AddNewTodo from './AddNewTodo';
 import TodoItem from './TodoItem';
 import DeleteTasklist from './DeleteTasklist';
 
-function Tasklist({ tasklists, dispatchTasklists }) {
-    const [title, setTitle] = useState('');
+import { useTasklists } from '../contexts';
+
+function Tasklist() {
+    const tasklists = useTasklists();
 
     return (
         <div className='row justify-content-center'>
@@ -24,36 +25,19 @@ function Tasklist({ tasklists, dispatchTasklists }) {
 
                     {tasklists?.map((tasklist) => (
                         <TabPanel key={tasklist.listid}>
-                            <TasklistTitle
-                                {...tasklist}
-                                // dispatchTasklists={dispatchTasklists}
-                                dispatchTasklists={dispatchTasklists}
-                            />
-                            <HideDone
-                                dispatchTasklists={dispatchTasklists}
-                                {...tasklist}
-                            />
-                            <AddNewTodo
-                                title={title}
-                                setTitle={setTitle}
-                                dispatchTasklists={dispatchTasklists}
-                                tasklists={tasklists}
-                                {...tasklist}
-                            />
+                            <TasklistTitle {...tasklist} />
+                            <HideDone {...tasklist} />
+                            <AddNewTodo {...tasklist} />
                             <ul className='list-group bg-light h-100 taskList'>
                                 {tasklist.items.map((item) => (
                                     <TodoItem
                                         key={item.id}
                                         {...tasklist}
                                         {...item}
-                                        dispatchTasklists={dispatchTasklists}
                                     />
                                 ))}
                             </ul>
-                            <DeleteTasklist
-                                dispatchTasklists={dispatchTasklists}
-                                {...tasklist}
-                            />
+                            <DeleteTasklist {...tasklist} />
                         </TabPanel>
                     ))}
                 </Tabs>

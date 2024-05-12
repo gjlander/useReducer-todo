@@ -1,6 +1,7 @@
 const tasklistsReducer = (tasklists, action) => {
     switch (action.type) {
         case 'list_added': {
+            console.log(action.tasklistName);
             return [
                 ...tasklists,
                 {

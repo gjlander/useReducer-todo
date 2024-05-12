@@ -1,13 +1,11 @@
-export default function DeleteTasklist({ setTasklists, listid }) {
+export default function DeleteTasklist({ dispatchTasklists, listid }) {
     const deleteList = () => {
-        setTasklists((prev) =>
-            prev.filter((tasklist) => tasklist.listid !== listid)
-        );
+        dispatchTasklists({ type: 'list_deleted', id: listid });
     };
     return (
         <button
-            type="submit"
-            className="btn btn-danger mt-4"
+            type='submit'
+            className='btn btn-danger mt-4'
             onClick={deleteList}
         >
             Delete this list

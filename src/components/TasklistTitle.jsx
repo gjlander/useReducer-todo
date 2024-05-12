@@ -1,25 +1,35 @@
-import { useState } from "react";
-export default function TasklistTitle({ tasklistName, listid, setTasklists }) {
+import { useState } from 'react';
+export default function TasklistTitle({
+    tasklistName,
+    listid,
+    dispatchTasklists,
+}) {
     const [editingTitle, setEditingTitle] = useState(false);
     const [titleEdit, setTitleEdit] = useState(tasklistName);
     const toggleEditingTitle = () => setEditingTitle((prev) => !prev);
-    const editTitle = () =>
-        setTasklists((prev) =>
-            prev.map((tasklist) =>
-                tasklist.listid === listid
-                    ? { ...tasklist, tasklistName: titleEdit }
-                    : tasklist
-            )
-        );
+    const editTitle = () => {
+        dispatchTasklists({
+            type: 'list_name_updated',
+            id: listid,
+            name: titleEdit,
+        });
+        // setTasklists((prev) =>
+        //     prev.map((tasklist) =>
+        //         tasklist.listid === listid
+        //             ? { ...tasklist, tasklistName: titleEdit }
+        //             : tasklist
+        //     )
+        // );
+    };
     return (
-        <div className="d-flex justify-content-center my-3">
+        <div className='d-flex justify-content-center my-3'>
             {!editingTitle ? (
-                <h2 className="display-4" onClick={toggleEditingTitle}>
+                <h2 className='display-4' onClick={toggleEditingTitle}>
                     {tasklistName}
                 </h2>
             ) : (
                 <form
-                    className="input-group w-25"
+                    className='input-group w-25'
                     onSubmit={(e) => {
                         e.preventDefault();
                         editTitle();
@@ -27,16 +37,16 @@ export default function TasklistTitle({ tasklistName, listid, setTasklists }) {
                     }}
                 >
                     <input
-                        type="text"
-                        className="form-control"
+                        type='text'
+                        className='form-control'
                         value={titleEdit}
                         onChange={(e) => setTitleEdit(e.target.value)}
                     />
 
                     <button
-                        type="button"
-                        className="btn btn-close"
-                        aria-label="Close"
+                        type='button'
+                        className='btn btn-close'
+                        aria-label='Close'
                         onClick={toggleEditingTitle}
                     ></button>
                 </form>

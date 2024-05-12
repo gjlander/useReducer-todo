@@ -1,39 +1,20 @@
-import { useState } from "react";
-import EditForm from "./EditForm";
-function TodoItem({ id, done, title, hideDone, setTasklists, listid }) {
+import { useState } from 'react';
+import EditForm from './EditForm';
+function TodoItem({ id, done, title, hideDone, dispatchTasklists, listid }) {
     const [editing, setEditing] = useState(false);
-   
+
     const toggleEditing = () => {
         setEditing((prev) => !prev);
     };
 
     const toggleDone = () => {
-        setTasklists((prev) =>
-            prev.map((tasklist) => {
-                if (tasklist.listid === listid) {
-                    const newItems = tasklist.items.map((item) =>
-                        item.id === id ? { ...item, done: !item.done } : item
-                    );
-                    return { ...tasklist, items: newItems };
-                } else {
-                    return tasklist;
-                }
-            })
-        );
+        dispatchTasklists({ type: 'item_done', listid, id });
     };
     const deleteTodo = () => {
-        setTasklists((prev) =>
-            prev.map((tasklist) => {
-                if (tasklist.listid === listid) {
-                    const newItems = tasklist.items.filter(
-                        (item) => item.id !== id
-                    );
-                    return { ...tasklist, items: newItems };
-                } else {
-                    return tasklist;
-                }
-            })
-        );
+        dispatchTasklists({ type: 'item_deleted', listid, id });
+    };
+    const editTodo = (newTitle) => {
+        dispatchTasklists({ type: 'item_edited', listid, id, newTitle });
     };
     return (
         <li
@@ -41,20 +22,20 @@ function TodoItem({ id, done, title, hideDone, setTasklists, listid }) {
             d-flex
             justify-content-between
             align-items-center
-            gap-1 ${hideDone && done && "d-none"}`}
+            gap-1 ${hideDone && done && 'd-none'}`}
         >
             {!editing ? (
                 <>
-                    <div className="d-flex me-auto gap-2">
+                    <div className='d-flex me-auto gap-2'>
                         <input
-                            type="checkbox"
+                            type='checkbox'
                             checked={done}
                             onChange={toggleDone}
                             id={id}
                         />
                         <label
                             className={`form-check-label todoText ${
-                                done && "text-decoration-line-through"
+                                done && 'text-decoration-line-through'
                             }`}
                             htmlFor={id}
                         >
@@ -62,15 +43,15 @@ function TodoItem({ id, done, title, hideDone, setTasklists, listid }) {
                         </label>
                     </div>
                     <button
-                        type="button"
-                        className="btn btn-success"
+                        type='button'
+                        className='btn btn-success'
                         onClick={toggleEditing}
                     >
                         Edit
                     </button>
                     <button
-                        type="button"
-                        className="btn btn-danger"
+                        type='button'
+                        className='btn btn-danger'
                         onClick={deleteTodo}
                     >
                         Delete
@@ -78,11 +59,9 @@ function TodoItem({ id, done, title, hideDone, setTasklists, listid }) {
                 </>
             ) : (
                 <EditForm
-                    todoId={id}
-                    todoTitle={title}
+                    initialTitle={title}
                     toggleEditing={toggleEditing}
-                    setTasklists={setTasklists}
-                    listid={listid}
+                    editTodo={editTodo}
                 />
             )}
         </li>
